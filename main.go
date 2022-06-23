@@ -58,8 +58,6 @@ func main() {
 		fmt.Println("Failed to ListenAndServe : ", err)
 	}
 	
-	
-	
 }
 
 func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
@@ -68,7 +66,7 @@ func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 	return chromedp.Tasks{
 		emulation.SetUserAgentOverride("WebScraper 1.0"),
 		chromedp.Navigate(url),
-		chromedp.WaitVisible(`body`, chromedp.ByQuery),
+		chromedp.WaitVisible(sel, chromedp.ByQuery),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			buf, _, err := page.PrintToPDF().WithPrintBackground(true).Do(ctx)
 			if err != nil {
