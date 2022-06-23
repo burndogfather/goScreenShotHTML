@@ -13,21 +13,16 @@ import (
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
-	
-	if !(req.Method == "POST") {
-		httputil.BadRequestError(conn, "Inconfigured handler.")
-		return
-	}
-	
+	//POST데이터 수집
 	req.ParseForm()
-	url := req.FormValue("target_url")
-	if url == "" {
-		httputil.BadRequestError(conn, "Missing sjson parameter.")
-		return
-	}
+	postdata := req.PostForm 
 	
-	fmt.Println("target_url : ", url)	
+	//target_url이라는 POST key값이 있다면, url변수로 변환
+	if postdata["target_url"] != nil{ 
+		url, _ := postdata["target_url"]
 		
+		fmt.Println(url)
+	}
 }
 
 func main() {
@@ -49,7 +44,7 @@ func main() {
 	taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
 	defer cancel()
 	var pdfBuffer []byte
-	if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
+	if err := chromedp.Run(taskCtx, pdfGrabber("https://www.naver.com", "body", &pdfBuffer)); err != nil {
 		log.Fatal(err)
 	}
 	if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
