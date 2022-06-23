@@ -15,21 +15,22 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	postdata := req.PostForm
 	if postdata["url"] != nil{
+		url, _ := postdata["url"]
 		
-		test, _ := postdata["url"]
+		
+		
 		fmt.Println(test)
 	}
-	if url, ok := postdata["url"]; ok {
-		fmt.Println("value: ", url)
-		fmt.Fprintln(res, url)
-	}
+	
 	
 }
 
 func main() {
 	
+	//8000번 포트로 http 서버열기
 	err := http.ListenAndServe(":8000", http.HandlerFunc(requestHandler))
 	if err != nil {
+		//http 서버 실행실패시 에러처리
 		fmt.Println("Failed to ListenAndServe : ", err)
 	}
 	
