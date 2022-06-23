@@ -11,6 +11,17 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+//메인함수
+func main() {
+	//8000번 포트로 http 서버열기
+	//nginx연결됨 (https://git.coco.sqs.kr/proxy-8000)
+	err := http.ListenAndServe(":8000", http.HandlerFunc(requestHandler))
+	if err != nil {
+		//http 서버 실행실패시 에러처리
+		fmt.Println("Failed to ListenAndServe : ", err)
+	}
+}
+
 //err.Error() 를 통해 error메시지를 string으로 변환
 type errorString struct {
 	s string
@@ -67,23 +78,15 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		res.Write(pdfBuffer)
 		return 
 		
-		
 	}
 }
 
-func main() {
-	//8000번 포트로 http 서버열기
-	//nginx연결됨 (https://git.coco.sqs.kr/proxy-8000)
-	err := http.ListenAndServe(":8000", http.HandlerFunc(requestHandler))
-	if err != nil {
-		//http 서버 실행실패시 에러처리
-		fmt.Println("Failed to ListenAndServe : ", err)
-	}
-}
+
 
 //PDF생성함수
 func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
-	start := time.Now()
+	//실행시간 측정시작
+	//start := time.Now()
 	return chromedp.Tasks{
 		emulation.SetUserAgentOverride("WebScraper 1.0"), //USER AGENT설정
 		chromedp.Navigate(url),
@@ -94,7 +97,7 @@ func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 				return err
 			}
 			*res = buf
-			//실행시간측정
+			//실행시간 측정종료
 			//fmt.Printf("\nDuration: %f secs\n", time.Since(start).Seconds())
 			return nil
 		}),
