@@ -23,10 +23,11 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	//POST 데이터에서 url이라는 값을 찾아서 String을 벗기기(?)
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
 		
+		//반환데이터 
 		res.WriteHeader(http.StatusCreated)
 		res.Header().Set("Content-Type", "application/json")
-		resdata := make(map[string]bool)
-		resdata["is_success"] = false
+		resdata := make(map[string]string)
+		resdata["status"] = "200"
 		
 		
 		//var url string
