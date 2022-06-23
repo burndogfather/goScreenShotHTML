@@ -21,12 +21,10 @@ func (e *errorString) Error() string {
 	return e.s
 }
 
-func getMapValue(m map[string]string, k string) string {
+func getMapValue(m map[string]string) string {
 	b := new(bytes.Buffer)
-	for key, value := range m {
-		if key == k {
-			fmt.Fprintf(b, "%s", value)
-		}
+	for _, value := range m {
+		fmt.Fprintf(b, "%s", value)
 	}
 	return b.String()
 }
@@ -55,7 +53,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 		*/
-		fmt.Println(getMapValue(postdata, "url"))
+		fmt.Println(getMapValue(postdata["url"]))
 		
 		
 		fmt.Println(postdata["url"])
