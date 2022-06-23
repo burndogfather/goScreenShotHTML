@@ -33,16 +33,16 @@ func (e *errorString) Error() string {
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	
+	//반환될 Response 사전정의
+	res.WriteHeader(http.StatusCreated)
+	resdata := make(map[string]string)
+	
 	//FORM > POST 데이터 가져오기
 	req.ParseForm()
 	postdata := req.PostForm
 	
 	//POST 데이터에서 url이라는 값을 찾아서 String을 벗기기(?)
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
-		
-		//반환될 Response 사전정의
-		res.WriteHeader(http.StatusCreated)
-		
 		
 		//Map풀기
 		url := postdata["url"][0]
@@ -64,7 +64,6 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
 			//실패시 fail출력
 			res.Header().Set("Content-Type", "application/json")
-			resdata := make(map[string]string)
 			resdata["status"] = "fail"
 			resdata["errormsg"] = err.Error()
 			output, err := json.Marshal(resdata)
@@ -80,6 +79,17 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		res.Write(pdfBuffer)
 		return 
 		
+	}else{
+		//실패시 fail출력
+		res.Header().Set("Content-Type", "application/json")
+		resdata["status"] = "fail"
+		resdata["errormsg"] = err.Error()
+		output, err := json.Marshal(resdata)
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+		res.Write(output)
+		return 
 	}
 }
 
