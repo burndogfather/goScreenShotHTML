@@ -22,7 +22,6 @@
 	*/
 	
 	
-	var datas = json1;
 	var xhr = new XMLHttpRequest();
 	xhr.open("POST", "https://git.coco.sqs.kr/proxy-8000/");
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -32,11 +31,6 @@
 			var blob = new Blob([xhr.response], {type: 'application/pdf'});
 			const url = window.URL.createObjectURL(blob);
 			window.open(url,"_blank");
-			setTimeout(function () {
-				// For Firefox it is necessary to delay revoking the ObjectURL
-				window.URL.revokeObjectURL(datas)
-					, 100
-			})
 		}
 	};
 	xhr.send(new URLSearchParams({
