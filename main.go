@@ -17,8 +17,6 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	if url, ok := postdata["url"]; ok {
 		fmt.Println("value: ", url)
 		fmt.Fprintln(res, url)
-	} else {
-		fmt.Println("key not found")
 	}
 	
 }
