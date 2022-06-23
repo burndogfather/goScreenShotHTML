@@ -22,12 +22,14 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		for _, url := range postdata["url"] {
 			fmt.Println(url)
 			
-			
+			//여기서부터 Chromedp설정
 			taskCtx, cancel := chromedp.NewContext(
 				context.Background(),
 				chromedp.WithLogf(log.Printf),
 			)
 			defer cancel()
+			
+			//최대 대기시간은 15초
 			taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
 			defer cancel()
 			var pdfBuffer []byte
