@@ -13,7 +13,9 @@ import (
 
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
-	fmt.Fprintln(res, req.PostForm)
+	postdata := req.PostForm
+	_, url := postdata['url']
+	fmt.Fprintln(res, postdata)
 }
 
 func main() {
