@@ -21,7 +21,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
 		
 		var url string
-		var element string
+		//var element string
 		
 		for _, url := range postdata["url"] {
 			fmt.Println(url)
@@ -30,12 +30,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 		
-		for _, element := range postdata["element"] {
-			fmt.Println(element)
-			if len(element) == 0 {
-				break;
-			}
-		}
+		
 		
 		//여기서부터 Chromedp설정
 		taskCtx, cancel := chromedp.NewContext(
@@ -50,7 +45,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		//사이트 캡쳐
 		var pdfBuffer []byte
-		if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
+		if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
 			log.Fatal(err)
 		}
 		
@@ -82,7 +77,7 @@ func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 	return chromedp.Tasks{
 		emulation.SetUserAgentOverride("WebScraper 1.0"),
 		chromedp.Navigate(url),
-		chromedp.WaitVisible(sel, chromedp.ByQuery),
+		chromedp.WaitVisible(`body`, chromedp.ByQuery),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			buf, _, err := page.PrintToPDF().WithPrintBackground(true).Do(ctx)
 			if err != nil {
