@@ -17,10 +17,12 @@ func main() {
 	//서비스로 실행하기 위한 OS시그널처리
 	channel := make(chan os.Signal, 1)
 	signal.Notify(channel)
-	for sig := range channel {
-		log.Println("Got signal:", sig)
+	go func() {
+		s := <-channel
+		log.Printf("받은 시그널: %s\n", s)
+		AppCleanup()
 		os.Exit(1)
-	}
+	}()
 	
 	//8000번 포트로 http 서버열기
 	//nginx연결됨 (https://git.coco.sqs.kr/proxy-8000)
