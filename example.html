@@ -13,6 +13,7 @@
 		response.blob();
 	}).then((blob) => {
 		var data = new Blob(blob, {type: "application/pdf;charset=utf-8"});
+		window.open(data);
 		FileSaver.saveAs(data, "test.pdf");
 	});
 	
