@@ -20,8 +20,6 @@ func (e *errorString) Error() string {
 	return e.s
 }
 
-
-
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	
@@ -32,16 +30,17 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	//POST 데이터에서 url이라는 값을 찾아서 String을 벗기기(?)
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
 		
-		//반환될 데이터 사전정의
+		//반환될 Response 사전정의
 		res.WriteHeader(http.StatusCreated)
 		res.Header().Set("Content-Type", "application/json")
 		resdata := make(map[string]string)
 		resdata["status"] = "fail"
 		
+		//Map풀기
 		url := postdata["url"][0]
 		element := postdata["element"][0]
 		
-		//여기서부터 Chromedp설정
+		//Chromedp설정
 		taskCtx, cancel := chromedp.NewContext(
 			context.Background(),
 			chromedp.WithLogf(log.Printf),
