@@ -65,7 +65,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		}
 		*/
 		resdata["status"] = "ok"
-		
+		resdata["pdf"] = string(pdfBuffer[:])
 		
 		//반환데이터를 json으로 변환
 		output, err := json.Marshal(resdata)
