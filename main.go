@@ -12,6 +12,15 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+type errorString struct {
+	s string
+}
+
+func (e *errorString) Error() string {
+	return e.s
+}
+
+
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	
