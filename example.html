@@ -12,7 +12,7 @@
 		})
 	}).then((response) => {
 		const reader = response.body.getReader();
-		
+		window.open(reader);
 		var blob = new Blob(reader, {type: "application/pdf"});
 		FileSaver.saveAs(blob, "test.pdf");
 	});
