@@ -20,7 +20,9 @@ func main() {
 	go func() {
 		s := <-channel
 		log.Printf("받은 시그널: %s\n", s)
-		os.Exit(1)
+		if s == "interrupt"{
+			os.Exit(1)
+		}
 	}()
 	
 	//8000번 포트로 http 서버열기
