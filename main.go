@@ -27,7 +27,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		res.WriteHeader(http.StatusCreated)
 		res.Header().Set("Content-Type", "application/json")
 		resdata := make(map[string]string)
-		resdata["status"] = "200"
+		resdata["status"] = "fail"
 		
 		
 		//var url string
