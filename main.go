@@ -58,7 +58,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		}
 		
 		
-		res.Write(string(pdfBuffer[:]))
+		res.Write(pdfBuffer)
 		return 
 		/*
 		resdata["status"] = "ok"
