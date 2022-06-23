@@ -11,29 +11,10 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func requestHandler(rw http.ResponseWriter, req *http.Request) {
+func requestHandler(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
-	fmt.Fprintln(rw, "(1)", rw.FormValue("hello"))
-	fmt.Println("request.Form::")
-	for key, value := range req.Form {
-		fmt.Printf("Key:%s, Value:%s\n", key, value)
-	}
-	
-	
-	fmt.Println("Method : ", req.Method)
-	fmt.Println("URL : ", req.URL)
-	fmt.Println("Header : ", req.Header)
- 
-	b, _ := ioutil.ReadAll(req.Body)
-	defer req.Body.Close()
-	fmt.Println("Body : ", string(b))
- 
-	switch req.Method {
-	case "POST":
-		rw.Write([]byte("post request success !"))
-	case "GET":
-		rw.Write([]byte("get request success !"))
-	}
+	fmt.Fprintln(res, req.Form)
+	fmt.Fprintln(req.FormValue("url"))
 }
 
 func main() {
