@@ -24,14 +24,12 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		var element string
 		
 		for _, url := range postdata["url"] {
-			
 			if len(url) != 0 {
 				break;
 			}
 		}
 		
 		for _, element := range postdata["element"] {
-			
 			if len(element) != 0 {
 				break;
 			}
