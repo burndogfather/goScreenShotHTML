@@ -3,7 +3,6 @@ import (
 	"net/http"
 	"encoding/json"
 	"context"
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -21,14 +20,6 @@ func (e *errorString) Error() string {
 	return e.s
 }
 
-
-func MaptoString(m map[string]) string {
-	b := new(bytes.Buffer)
-	for _, data := range m {
-		fmt.Fprintf(b, "%s", data)
-	}
-	return b.String()
-}
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
@@ -55,7 +46,8 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		*/
 		
 		fmt.Println(postdata["url"])
-		fmt.Println(createKeyValuePairs(postdata["url"]))
+		s = fmt.Sprintf("%s",postdata["url"])
+		fmt.Println(s)
 		
 		for _, url := range postdata["url"] {
 			
