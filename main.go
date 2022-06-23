@@ -12,10 +12,10 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+//err.Error() 를 통해 error메시지를 string으로 변환
 type errorString struct {
 	s string
 }
-
 func (e *errorString) Error() string {
 	return e.s
 }
