@@ -1,6 +1,7 @@
 package main
 import (
 	"net/http"
+	"encoding/json"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -13,7 +14,6 @@ import (
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
-	res.Header().Set("Content-Type", "application/json")
 	
 	
 	//FORM > POST 데이터 가져오기
@@ -56,6 +56,17 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
 				log.Fatal(err)
 			}
+			
+			res.WriteHeader(http.StatusCreated)
+			res.Header().Set("Content-Type", "application/json")
+			resdata := make(map[string]string)
+			resdata["is_success"] = false
+			output, err := json.Marshal(resdata)
+			if err != nil {
+				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+			}
+			res.Write(output)
+			return
 				
 		}
 		
