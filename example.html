@@ -10,7 +10,9 @@
 			url: 'https://www.google.co.kr',
 			element: 'body'
 		})
-	}).then((response) => response.json()).then((data)=>{
+	}).then((response) => {
+		console.log(response);
+	}).then((data)=>{
 		console.log(data);
 	});
 	
