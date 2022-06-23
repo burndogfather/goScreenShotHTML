@@ -83,7 +83,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		//실패시 fail출력
 		res.Header().Set("Content-Type", "application/json")
 		resdata["status"] = "fail"
-		resdata["errormsg"] = err.Error()
+		resdata["errormsg"] = "Parameter ERROR!"
 		output, err := json.Marshal(resdata)
 		if err != nil {
 			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
