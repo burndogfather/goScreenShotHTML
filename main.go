@@ -1,6 +1,7 @@
 package main
 import (
 	"net/http"
+	"bytes"
 	"encoding/json"
 	"context"
 	"fmt"
@@ -18,6 +19,16 @@ type errorString struct {
 }
 func (e *errorString) Error() string {
 	return e.s
+}
+
+func getMapValue(m map[string]string, k string) string {
+	b := new(bytes.Buffer)
+	for key, value := range m {
+		if key == k {
+			fmt.Fprintf(b, "%s", value)
+		}
+	}
+	return b.String()
 }
 
 
