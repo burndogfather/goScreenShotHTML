@@ -11,6 +11,9 @@
 		})
 	}).then((response) => {
 		response.blob();
-	}).then(blob => download(blob));
+	}).then((blob) => {
+		var data = new Blob(blob, {type: "application/pdf;charset=utf-8"});
+		FileSaver.saveAs(data, "test.pdf");
+	});
 	
 </script>
