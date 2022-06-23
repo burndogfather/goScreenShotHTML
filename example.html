@@ -11,9 +11,7 @@
 			element: 'body'
 		})
 	}).then((response) => {
-		response.body;
-	}).then((body)=>{
-		const reader = body.getReader();
+		const reader = response.body.getReader();
 	});
 	
 </script>
