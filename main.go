@@ -11,23 +11,23 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+//요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
-	req.ParseForm()
-	postdata := req.PostForm
-	if postdata["url"] != nil{
+	req.ParseForm() //form데이터 수집
+	postdata := req.PostForm //post데이터만 담기
+	if postdata["url"] != nil{ //post데이터에서 url이라는 값찾기
 		url, _ := postdata["url"]
 		
 		
 		
 		fmt.Println(test)
 	}
-	
-	
 }
 
 func main() {
 	
 	//8000번 포트로 http 서버열기
+	//nginx연결됨 (https://git.coco.sqs.kr/proxy-8000)
 	err := http.ListenAndServe(":8000", http.HandlerFunc(requestHandler))
 	if err != nil {
 		//http 서버 실행실패시 에러처리
