@@ -13,7 +13,7 @@ import (
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
-	//post데이터만 수집
+	//POST데이터 수집
 	req.ParseForm()
 	postdata := req.PostForm 
 	
@@ -21,9 +21,22 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	if postdata["target_url"] != nil{ 
 		url, _ := postdata["target_url"]
 		
+		taskCtx, cancel := chromedp.NewContext(
+			context.Background(),
+			chromedp.WithLogf(log.Printf),
+		)
+		defer cancel()
+		taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
+		defer cancel()
+		var pdfBuffer []byte
+		if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
+			log.Fatal(err)
+		}
+		if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
+			log.Fatal(err)
+		}
 		
-		
-		fmt.Println(test)
+		fmt.Println(url)
 	}
 }
 
@@ -38,20 +51,6 @@ func main() {
 	}
 	
 	
-	taskCtx, cancel := chromedp.NewContext(
-		context.Background(),
-		chromedp.WithLogf(log.Printf),
-	)
-	defer cancel()
-	taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
-	defer cancel()
-	var pdfBuffer []byte
-	if err := chromedp.Run(taskCtx, pdfGrabber("https://www.naver.com", "body", &pdfBuffer)); err != nil {
-		log.Fatal(err)
-	}
-	if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
-		log.Fatal(err)
-	}
 }
 
 func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
