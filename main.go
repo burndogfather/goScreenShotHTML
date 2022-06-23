@@ -24,7 +24,6 @@ func (e *errorString) Error() string {
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	
-	
 	//FORM > POST 데이터 가져오기
 	req.ParseForm()
 	postdata := req.PostForm
@@ -45,6 +44,10 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 		*/
+		
+		fmt.Println(postdata["url"])
+		
+		fmt.Println(postdata["url"])
 		
 		for _, url := range postdata["url"] {
 			
