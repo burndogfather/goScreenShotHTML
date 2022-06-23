@@ -22,6 +22,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		var url string
 		var element string
+		
 		for _, url := range postdata["url"] {
 			fmt.Println(url)
 		}
