@@ -13,6 +13,9 @@ import (
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
+	res.Header().Set("Content-Type", "application/json")
+	
+	
 	//FORM > POST 데이터 가져오기
 	req.ParseForm()
 	postdata := req.PostForm
