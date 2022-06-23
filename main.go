@@ -120,7 +120,7 @@ func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 			}
 			*res = buf
 			//실행시간 측정종료
-			log.Printf("\nDuration: %f secs\n", time.Since(start).Seconds())
+			log.Printf("\n%s | %f secs\n",url, time.Since(start).Seconds())
 			return nil
 		}),
 	}
