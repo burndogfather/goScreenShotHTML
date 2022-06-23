@@ -20,6 +20,17 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	//POST 데이터에서 url이라는 값을 찾아서 String을 벗기기(?)
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
 		
+		var url string
+		var element string
+		
+		for _, url := range postdata["url"] {
+			fmt.Println(url)
+		}
+		
+		for _, element := range postdata["element"] {
+			fmt.Println(element)
+		}
+		
 		//여기서부터 Chromedp설정
 		taskCtx, cancel := chromedp.NewContext(
 			context.Background(),
@@ -31,41 +42,17 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
 		defer cancel()
 		
-		
-		var url string
-		var element string
-		
-		for _, url := range postdata["url"] {
-			if (url != "" && element != "") {
-				
-				//사이트 캡쳐
-				var pdfBuffer []byte
-				if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
-					log.Fatal(err)
-				}
-				
-				//파일로 저장
-				if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
-					log.Fatal(err)
-				}
-			}
+		//사이트 캡쳐
+		var pdfBuffer []byte
+		if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
+			log.Fatal(err)
 		}
 		
-		for _, element := range postdata["element"] {
-			if (url != "" && element != "") {
-				
-				//사이트 캡쳐
-				var pdfBuffer []byte
-				if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
-					log.Fatal(err)
-				}
-				
-				//파일로 저장
-				if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
-					log.Fatal(err)
-				}
-			}
+		//파일로 저장
+		if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
+			log.Fatal(err)
 		}
+			
 		
 		
 	}
