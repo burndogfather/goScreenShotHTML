@@ -58,11 +58,13 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			resdata["errormsg"] = err.Error()
 		}
 		
+		/*
 		//파일로 저장
 		if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
 			resdata["status"] = "fail"
 			resdata["errormsg"] = err.Error()
 		}
+		*/
 		
 		resdata["status"] = "ok"
 		output, err := json.Marshal(resdata)
