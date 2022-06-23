@@ -2,9 +2,9 @@
 	fetch('https://git.coco.sqs.kr/proxy-8000/', {
 		method: 'POST',
 		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
+			'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
 		},
-		body: JSON.stringify({
+		body: new URLSearchParams({
 			url: 'https://www.google.co.kr',
 			element: 'body'
 		})
