@@ -3,6 +3,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"context"
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -24,7 +25,7 @@ func (e *errorString) Error() string {
 func MaptoString(m map[string]) string {
 	b := new(bytes.Buffer)
 	for _, data := range m {
-		fmt.Fprintf(b, "%s, data)
+		fmt.Fprintf(b, "%s", data)
 	}
 	return b.String()
 }
