@@ -14,7 +14,7 @@
 		}).then((response) => {
 			response.blob();
 		}).then((blob) => {
-			var blobdata = new Blob(blob, {type: "application/pdf"});
+			var blobdata = new Blob([blob], {type: "application/pdf"});
 			var fileURL = window.URL.createObjectURL(blobdata);
 			window.open(fileURL);
 		});
