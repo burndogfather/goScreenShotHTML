@@ -29,18 +29,17 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		resdata := make(map[string]string)
 		resdata["status"] = "fail"
 		
-		
-		//var url string
-		//var element string
-		
-		for _, url := range postdata["url"] {
-			/*
-			if len(url) != 0 {
+		/*
+		for _, element := range postdata["element"] {
+			if len(element) != 0 {
 				break;
 			}
-			*/
-			fmt.Println(url)
+		}
+		*/
+		
+		for _, url := range postdata["url"] {
 			
+			fmt.Println(url)
 			
 			//여기서부터 Chromedp설정
 			taskCtx, cancel := chromedp.NewContext(
@@ -56,15 +55,15 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			//사이트 캡쳐
 			var pdfBuffer []byte
 			if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
-				log.Fatal(err)
+				resdata["status"] = "fail"
 			}
 			
 			//파일로 저장
 			if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
-				log.Fatal(err)
+				resdata["status"] = "fail"
 			}
 			
-			
+			resdata["status"] = "ok"
 			output, err := json.Marshal(resdata)
 			if err != nil {
 				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
@@ -73,22 +72,6 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			return
 				
 		}
-		
-		
-		/*
-		for _, element := range postdata["element"] {
-			if len(element) != 0 {
-				break;
-			}
-		}
-		*/
-		
-		
-		
-		//fmt.Println(element)
-		
-		
-		
 		
 	}
 }
