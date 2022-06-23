@@ -65,11 +65,13 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			var pdfBuffer []byte
 			if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
 				resdata["status"] = "fail"
+				resdata["errormsg"] = err.Error()
 			}
 			
 			//파일로 저장
 			if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
 				resdata["status"] = "fail"
+				resdata["errormsg"] = err.Error()
 			}
 			
 			resdata["status"] = "ok"
