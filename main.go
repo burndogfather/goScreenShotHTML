@@ -13,10 +13,13 @@ import (
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
-	req.ParseForm() //form데이터 수집
-	postdata := req.PostForm //post데이터만 담기
-	if postdata["url"] != nil{ //post데이터에서 url이라는 값찾기
-		url, _ := postdata["url"]
+	//post데이터만 수집
+	req.ParseForm()
+	postdata := req.PostForm 
+	
+	//target_url이라는 POST key값이 있다면, url변수로 변환
+	if postdata["target_url"] != nil{ 
+		url, _ := postdata["target_url"]
 		
 		
 		
