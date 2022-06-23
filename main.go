@@ -14,6 +14,9 @@ import (
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	postdata := req.PostForm
+	if postdata["url"] != nil{
+		fmt.Println("OK!")
+	}
 	if url, ok := postdata["url"]; ok {
 		fmt.Println("value: ", url)
 		fmt.Fprintln(res, url)
