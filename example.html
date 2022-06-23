@@ -15,7 +15,10 @@
 			response.blob();
 		}).then((blob) => {
 			var blobdata = new Blob(blob, {type: "application/pdf"});
-			saveAs(blobdata, 'test.pdf');
+			var fileURL = window.URL.createObjectURL(blobdata);
+			a.href = fileURL;
+			a.download = 'test.pdf';
+			a.click();
 		});
 	}
 	
