@@ -20,16 +20,19 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	//POST 데이터에서 url이라는 값을 찾아서 String을 벗기기(?)
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
 		
+		var url string
+		var element string
+		
 		for _, url := range postdata["url"] {
 			fmt.Println(url)
-			if url != nil {
+			if len(url) == 0 {
 				break;
 			}
 		}
 		
 		for _, element := range postdata["element"] {
 			fmt.Println(element)
-			if element != nil {
+			if len(element) == 0 {
 				break;
 			}
 		}
