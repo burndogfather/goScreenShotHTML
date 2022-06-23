@@ -20,7 +20,7 @@ func main() {
 	go func() {
 		s := <-channel
 		log.Printf("받은 시그널: %s\n", s)
-		if s == "interrupt"{
+		if s.String() == "interrupt"{
 			os.Exit(1)
 		}
 	}()
