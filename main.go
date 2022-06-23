@@ -32,10 +32,14 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			//최대 대기시간은 15초
 			taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
 			defer cancel()
+			
+			//사이트 캡쳐
 			var pdfBuffer []byte
 			if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
 				log.Fatal(err)
 			}
+			
+			//파일로 저장
 			if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
 				log.Fatal(err)
 			}
