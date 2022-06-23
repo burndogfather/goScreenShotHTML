@@ -16,9 +16,11 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm() //form데이터 수집
 	postdata := req.PostForm //post데이터만 담기
 	if postdata["url"] != nil{ //post데이터에서 url이라는 값찾기
-		url, _ := postdata["url"]
+
+		for _, value := range postdata["url" {    // range over []string
+			fmt.Println(value)
+		}
 		
-		fmt.Println(url)
 	}
 }
 
