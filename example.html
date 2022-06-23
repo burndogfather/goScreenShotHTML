@@ -1,4 +1,6 @@
 <script>
+	
+	
 	fetch('https://git.coco.sqs.kr/proxy-8000/', {
 		method: 'POST',
 		headers: {
@@ -8,7 +10,7 @@
 			url: 'https://www.google.co.kr',
 			element: 'body'
 		})
-	}).then((response) => response.json()).then((data) => {
+	}).then((response) => response.json()).then((data)=>{
 		console.log(data);
 	});
 	
