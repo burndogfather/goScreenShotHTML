@@ -11,10 +11,12 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+var url string
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
 	postdata := req.PostForm
 	if url, ok := postdata["url"]; ok {
+		url := url.(string)
 		fmt.Println("value: ", url)
 		fmt.Fprintln(res, url)
 	}
