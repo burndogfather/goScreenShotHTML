@@ -14,13 +14,9 @@ import (
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
 	req.ParseForm() //form데이터 수집
-	
-	
 	postdata := req.PostForm //post데이터만 담기
-	
-	fmt.Println(postdata)
 	if postdata["url"] != nil{ //post데이터에서 url이라는 값찾기
-		url, _ := postdata["target_url"]
+		url, _ := postdata["url"]
 		
 		fmt.Println(url)
 	}
