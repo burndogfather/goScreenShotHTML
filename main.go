@@ -20,11 +20,6 @@ func (e *errorString) Error() string {
 	return e.s
 }
 
-func getMapValue(m map[string]string, key string) string {
-	for _, value := range m[key] {
-		return value
-	}
-}
 
 
 //요청이 들어오면 실행되는 함수
@@ -49,7 +44,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		fmt.Println(postdata["url"])
 		
-		fmt.Println(getMapValue(postdata ,"url"))
+		fmt.Println(postdata["url"].String())
 		
 		for _, url := range postdata["url"] {
 			
