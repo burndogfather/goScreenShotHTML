@@ -42,8 +42,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		//반환될 Response 사전정의
 		res.WriteHeader(http.StatusCreated)
-		resdata := make(map[string]string)
-		resdata["status"] = "fail"
+		
 		
 		//Map풀기
 		url := postdata["url"][0]
@@ -60,10 +59,12 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
 		defer cancel()
 		
-		//사이트 캡쳐
+		//사이트 캡쳐해서 버퍼생성
 		var pdfBuffer []byte
 		if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
+			//실패시 fail출력
 			res.Header().Set("Content-Type", "application/json")
+			resdata := make(map[string]string)
 			resdata["status"] = "fail"
 			resdata["errormsg"] = err.Error()
 			output, err := json.Marshal(resdata)
@@ -74,6 +75,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			return 
 		}
 		
+		//성공시 PDF형태로출력
 		res.Header().Set("Content-Type", "application/pdf")
 		res.Write(pdfBuffer)
 		return 
