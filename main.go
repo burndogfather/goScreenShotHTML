@@ -21,20 +21,10 @@ func (e *errorString) Error() string {
 	return e.s
 }
 
-func getMapValue(m map[string]string) string {
-	for _, value := range postdata["element"] {
-		if len(value) != 0 {
-			break;
-		}
+func getMapValue(m map[string]string, key string) string {
+	for _, value := range postdata[key] {
+		return value.String()
 	}
-	
-	
-	
-	b := new(bytes.Buffer)
-	for _, value := range m {
-		fmt.Fprintf(b, "%s", value)
-	}
-	return b.String()
 }
 
 
