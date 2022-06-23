@@ -1,7 +1,7 @@
 package main
 import (
 	"net/http"
-	"encoding/json"
+	//"encoding/json"
 	"context"
 	"fmt"
 	"log"
@@ -31,7 +31,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		//반환될 Response 사전정의
 		res.WriteHeader(http.StatusCreated)
-		res.Header().Set("Content-Type", "application/json")
+		//res.Header().Set("Content-Type", "application/json")
 		resdata := make(map[string]string)
 		resdata["status"] = "fail"
 		
@@ -57,13 +57,10 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			resdata["errormsg"] = err.Error()
 		}
 		
+		
+		res.Write(string(pdfBuffer[:]))
+		return 
 		/*
-		//파일로 저장
-		if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
-			resdata["status"] = "fail"
-			resdata["errormsg"] = err.Error()
-		}
-		*/
 		resdata["status"] = "ok"
 		resdata["pdf"] = string(pdfBuffer[:])
 		
@@ -74,7 +71,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		}
 		res.Write(output)
 		return 
-		
+		*/
 	}
 }
 
