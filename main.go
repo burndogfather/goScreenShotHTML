@@ -55,6 +55,8 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 		*/
+		fmt.Println(getMapValue(postdata, "url"))
+		
 		
 		fmt.Println(postdata["url"])
 		
