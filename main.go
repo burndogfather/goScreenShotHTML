@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"time"
 	"github.com/chromedp/cdproto/emulation"
@@ -66,7 +65,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		}
 		*/
 		resdata["status"] = "ok"
-		resdata["status"] = pdfBuffer
+		resdata["pdf"] = BytesToString(pdfBuffer)
 		
 		
 		//반환데이터를 json으로 변환
@@ -109,4 +108,11 @@ func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 			return nil
 		}),
 	}
+}
+
+
+func BytesToString(b []byte) string {
+	bh := (*reflect.SliceHeader)(unsafe.Pointer(&b))
+	sh := reflect.StringHeader{bh.Data, bh.Len}
+	return *(*string)(unsafe.Pointer(&sh))
 }
