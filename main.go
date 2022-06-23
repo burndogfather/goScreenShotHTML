@@ -11,12 +11,15 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func requestHandler(w http.ResponseWriter, req *http.Request) {
-	req.ParseMultipartForm(1024)
-	fmt.Fprintln(w, "(1)", req.FormValue("url"))
-	url, _ := req.FormValue("url")
+func requestHandler(rw http.ResponseWriter, req *http.Request) {
+	req.ParseForm()
+	fmt.Fprintln(rw, "(1)", r.FormValue("hello"))
+	fmt.Println("request.Form::")
+	for key, value := range req.Form {
+		fmt.Printf("Key:%s, Value:%s\n", key, value)
+	}
 	
-	fmt.Println("Method : ", url)
+	
 	fmt.Println("Method : ", req.Method)
 	fmt.Println("URL : ", req.URL)
 	fmt.Println("Header : ", req.Header)
@@ -27,9 +30,9 @@ func requestHandler(w http.ResponseWriter, req *http.Request) {
  
 	switch req.Method {
 	case "POST":
-		w.Write([]byte("post request success !"))
+		rw.Write([]byte("post request success !"))
 	case "GET":
-		w.Write([]byte("get request success !"))
+		rw.Write([]byte("get request success !"))
 	}
 }
 
