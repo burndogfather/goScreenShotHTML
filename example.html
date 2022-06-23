@@ -1,7 +1,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js"></script>
 <script>
 
-	var blobdata;
 	window.onload = function(){
 		fetch('https://git.coco.sqs.kr/proxy-8000/', {
 			method: 'POST',
@@ -15,7 +14,7 @@
 		}).then((response) => {
 			response.blob();
 		}).then((blob) => {
-			var data = new Blob(blob, {type: "application/pdf;charset=utf-8"});
+			var blobdata = new Blob(blob, {type: "application/pdf;charset=utf-8"});
 			FileSaver.saveAs(data, "test.pdf");
 		});
 	}
