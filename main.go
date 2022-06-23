@@ -3,7 +3,6 @@ import (
 	"net/http"
 	"encoding/json"
 	"context"
-	"fmt"
 	"log"
 	"time"
 	"os"
@@ -21,7 +20,6 @@ func main() {
 	go func() {
 		s := <-sigs
 		log.Printf("받은 시그널: %s\n", s)
-		AppCleanup()
 		os.Exit(1)
 	}()
 	
@@ -108,7 +106,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 //PDF생성함수
 func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 	//실행시간 측정시작
-	//start := time.Now()
+	start := time.Now()
 	return chromedp.Tasks{
 		emulation.SetUserAgentOverride("WebScraper 1.0"), //USER AGENT설정
 		chromedp.Navigate(url),
@@ -120,7 +118,7 @@ func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 			}
 			*res = buf
 			//실행시간 측정종료
-			//fmt.Printf("\nDuration: %f secs\n", time.Since(start).Seconds())
+			log.Printf("\nDuration: %f secs\n", time.Since(start).Seconds())
 			return nil
 		}),
 	}
