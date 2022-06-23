@@ -72,7 +72,6 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	
 	//8000번 포트로 http 서버열기
 	//nginx연결됨 (https://git.coco.sqs.kr/proxy-8000)
 	err := http.ListenAndServe(":8000", http.HandlerFunc(requestHandler))
@@ -80,13 +79,13 @@ func main() {
 		//http 서버 실행실패시 에러처리
 		fmt.Println("Failed to ListenAndServe : ", err)
 	}
-	
 }
 
+//PDF생성함수
 func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 	start := time.Now()
 	return chromedp.Tasks{
-		emulation.SetUserAgentOverride("WebScraper 1.0"),
+		emulation.SetUserAgentOverride("WebScraper 1.0"), //USER AGENT설정
 		chromedp.Navigate(url),
 		chromedp.WaitVisible(sel, chromedp.ByQuery),
 		chromedp.ActionFunc(func(ctx context.Context) error {
