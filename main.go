@@ -32,23 +32,14 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	//POST 데이터에서 url이라는 값을 찾아서 String을 벗기기(?)
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
 		
-		//반환데이터 
+		//반환될 데이터 사전정의
 		res.WriteHeader(http.StatusCreated)
 		res.Header().Set("Content-Type", "application/json")
 		resdata := make(map[string]string)
 		resdata["status"] = "fail"
 		
-		
-		
-		
-		
-		fmt.Println(postdata["url"][0])
-		
-		log.Println(fmt.Sprintf("Map: %s", postdata["url"][0]))
-
-		
-			
-		fmt.Println(url)
+		url := postdata["url"][0]
+		element := postdata["element"][0]
 		
 		//여기서부터 Chromedp설정
 		taskCtx, cancel := chromedp.NewContext(
@@ -63,7 +54,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		//사이트 캡쳐
 		var pdfBuffer []byte
-		if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
+		if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
 			resdata["status"] = "fail"
 			resdata["errormsg"] = err.Error()
 		}
