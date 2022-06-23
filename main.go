@@ -22,6 +22,14 @@ func (e *errorString) Error() string {
 }
 
 func getMapValue(m map[string]string) string {
+	for _, value := range postdata["element"] {
+		if len(value) != 0 {
+			break;
+		}
+	}
+	
+	
+	
 	b := new(bytes.Buffer)
 	for _, value := range m {
 		fmt.Fprintf(b, "%s", value)
@@ -46,14 +54,8 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		resdata := make(map[string]string)
 		resdata["status"] = "fail"
 		
-		/*
-		for _, element := range postdata["element"] {
-			if len(element) != 0 {
-				break;
-			}
-		}
-		*/
-		fmt.Println(getMapValue(postdata["url"]))
+		
+		
 		
 		
 		fmt.Println(postdata["url"])
