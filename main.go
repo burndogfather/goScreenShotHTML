@@ -1,7 +1,6 @@
 package main
 import (
 	"net/http"
-	"bytes"
 	"encoding/json"
 	"context"
 	"fmt"
@@ -22,8 +21,8 @@ func (e *errorString) Error() string {
 }
 
 func getMapValue(m map[string]string, key string) string {
-	for _, value := range postdata[key] {
-		return value.String()
+	for _, value := range m[key] {
+		return value
 	}
 }
 
@@ -49,6 +48,8 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		
 		fmt.Println(postdata["url"])
+		
+		fmt.Println(getMapValue(postdata ,"url"))
 		
 		for _, url := range postdata["url"] {
 			
