@@ -13,12 +13,11 @@ import (
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
-	//POST데이터 수집
-	req.ParseForm()
-	postdata := req.PostForm 
+	req.ParseForm() //form데이터 수집
+	fmt.Println(req)
 	
-	//target_url이라는 POST key값이 있다면, url변수로 변환
-	if postdata["target_url"] != nil{ 
+	postdata := req.PostForm //post데이터만 담기
+	if postdata["target_url"] != nil{ //post데이터에서 url이라는 값찾기
 		url, _ := postdata["target_url"]
 		
 		fmt.Println(url)
@@ -50,7 +49,6 @@ func main() {
 	if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
 		log.Fatal(err)
 	}
-	
 }
 
 func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
