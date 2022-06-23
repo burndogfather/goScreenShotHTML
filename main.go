@@ -14,9 +14,9 @@ import (
 func requestHandler(w http.ResponseWriter, req *http.Request) {
 	req.ParseMultipartForm(1024)
 	fmt.Fprintln(w, "(1)", req.FormValue("url"))
+	url, _ := req.FormValue("url")
 	
-	
-	
+	fmt.Println("Method : ", url)
 	fmt.Println("Method : ", req.Method)
 	fmt.Println("URL : ", req.URL)
 	fmt.Println("Header : ", req.Header)
