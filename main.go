@@ -1,7 +1,7 @@
 package main
 import (
 	"net/http"
-	//"encoding/json"
+	"encoding/json"
 	"context"
 	"fmt"
 	"log"
@@ -31,7 +31,6 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		//반환될 Response 사전정의
 		res.WriteHeader(http.StatusCreated)
-		res.Header().Set("Content-Type", "application/pdf")
 		resdata := make(map[string]string)
 		resdata["status"] = "fail"
 		
@@ -53,25 +52,22 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		//사이트 캡쳐
 		var pdfBuffer []byte
 		if err := chromedp.Run(taskCtx, pdfGrabber(url, element, &pdfBuffer)); err != nil {
+			res.Header().Set("Content-Type", "application/json")
 			resdata["status"] = "fail"
 			resdata["errormsg"] = err.Error()
+			output, err := json.Marshal(resdata)
+			if err != nil {
+				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+			}
+			res.Write(output)
+			return 
 		}
 		
-		
+		res.Header().Set("Content-Type", "application/pdf")
 		res.Write(pdfBuffer)
 		return 
-		/*
-		resdata["status"] = "ok"
-		resdata["pdf"] = string(pdfBuffer[:])
 		
-		//반환데이터를 json으로 변환
-		output, err := json.Marshal(resdata)
-		if err != nil {
-			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
-		}
-		res.Write(output)
-		return 
-		*/
+		
 	}
 }
 
@@ -88,7 +84,6 @@ func main() {
 }
 
 func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
-
 	start := time.Now()
 	return chromedp.Tasks{
 		emulation.SetUserAgentOverride("WebScraper 1.0"),
@@ -100,7 +95,8 @@ func pdfGrabber(url string, sel string, res *[]byte) chromedp.Tasks {
 				return err
 			}
 			*res = buf
-			fmt.Printf("\nDuration: %f secs\n", time.Since(start).Seconds())
+			//실행시간측정
+			//fmt.Printf("\nDuration: %f secs\n", time.Since(start).Seconds())
 			return nil
 		}),
 	}
