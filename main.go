@@ -65,8 +65,11 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 			resdata["errormsg"] = err.Error()
 		}
 		*/
-		
 		resdata["status"] = "ok"
+		resdata["status"] = pdfBuffer
+		
+		
+		//반환데이터를 json으로 변환
 		output, err := json.Marshal(resdata)
 		if err != nil {
 			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
