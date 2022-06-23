@@ -13,7 +13,7 @@ import (
 
 func requestHandler(rw http.ResponseWriter, req *http.Request) {
 	req.ParseForm()
-	fmt.Fprintln(rw, "(1)", r.FormValue("hello"))
+	fmt.Fprintln(rw, "(1)", rw.FormValue("hello"))
 	fmt.Println("request.Form::")
 	for key, value := range req.Form {
 		fmt.Printf("Key:%s, Value:%s\n", key, value)
