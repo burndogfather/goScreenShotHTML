@@ -11,13 +11,29 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
+func requestHandler(rw http.ResponseWriter, req *http.Request) {
+	fmt.Println("Method : ", req.Method)
+	fmt.Println("URL : ", req.URL)
+	fmt.Println("Header : ", req.Header)
+ 
+	b, _ := ioutil.ReadAll(req.Body)
+	defer req.Body.Close()
+	fmt.Println("Body : ", string(b))
+ 
+	switch req.Method {
+	case "POST":
+		rw.Write([]byte("post request success !"))
+	case "GET":
+		rw.Write([]byte("get request success !"))
+	}
+}
+
 func main() {
 	
-	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		w.Write([]byte("Hello World"))
-	})
-	
-	http.ListenAndServe(":9001", nil)
+	err := http.ListenAndServe(":8000", http.HandlerFunc(requestHandler))
+	if err != nil {
+		fmt.Println("Failed to ListenAndServe : ", err)
+	}
 	
 	
 	taskCtx, cancel := chromedp.NewContext(
