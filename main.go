@@ -44,7 +44,8 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		fmt.Println(postdata["url"])
 		
-		fmt.Println(postdata["url"].String())
+		log.Println(fmt.Sprintf("Map: %s", postdata["url"]))
+
 		
 		for _, url := range postdata["url"] {
 			
