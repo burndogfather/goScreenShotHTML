@@ -14,7 +14,7 @@
 		}).then((response) => {
 			response.blob();
 		}).then((blob) => {
-			var blobdata = new Blob(blob, {type: "application/pdf;charset=utf-8"});
+			var blobdata = new Blob(blob, {type: "application/pdf"});
 			saveAs(blobdata, 'test.pdf');
 		});
 	}
