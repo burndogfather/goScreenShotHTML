@@ -47,7 +47,6 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		fmt.Println(postdata["url"])
 		
-		fmt.Println(postdata["url"])
 		
 		for _, url := range postdata["url"] {
 			
