@@ -12,6 +12,13 @@ import (
 )
 
 func requestHandler(rw http.ResponseWriter, req *http.Request) {
+	req.ParseForm()
+	fmt.Println("request.Form::")
+	for key, value := range req.Form {
+		fmt.Printf("Key:%s, Value:%s\n", key, value)
+	}
+	
+	
 	fmt.Println("Method : ", req.Method)
 	fmt.Println("URL : ", req.URL)
 	fmt.Println("Header : ", req.Header)
