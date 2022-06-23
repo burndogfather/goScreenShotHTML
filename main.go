@@ -42,48 +42,45 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		
 		
-		fmt.Println(postdata["url"])
+		fmt.Println(postdata["url"][0])
 		
-		log.Println(fmt.Sprintf("Map: %s", postdata["url"]))
+		log.Println(fmt.Sprintf("Map: %s", postdata["url"][0]))
 
 		
-		for _, url := range postdata["url"] {
 			
-			fmt.Println(url)
-			
-			//여기서부터 Chromedp설정
-			taskCtx, cancel := chromedp.NewContext(
-				context.Background(),
-				chromedp.WithLogf(log.Printf),
-			)
-			defer cancel()
-			
-			//최대 대기시간은 15초
-			taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
-			defer cancel()
-			
-			//사이트 캡쳐
-			var pdfBuffer []byte
-			if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
-				resdata["status"] = "fail"
-				resdata["errormsg"] = err.Error()
-			}
-			
-			//파일로 저장
-			if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
-				resdata["status"] = "fail"
-				resdata["errormsg"] = err.Error()
-			}
-			
-			resdata["status"] = "ok"
-			output, err := json.Marshal(resdata)
-			if err != nil {
-				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
-			}
-			res.Write(output)
-			return
-				
+		fmt.Println(url)
+		
+		//여기서부터 Chromedp설정
+		taskCtx, cancel := chromedp.NewContext(
+			context.Background(),
+			chromedp.WithLogf(log.Printf),
+		)
+		defer cancel()
+		
+		//최대 대기시간은 15초
+		taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
+		defer cancel()
+		
+		//사이트 캡쳐
+		var pdfBuffer []byte
+		if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
+			resdata["status"] = "fail"
+			resdata["errormsg"] = err.Error()
 		}
+		
+		//파일로 저장
+		if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
+			resdata["status"] = "fail"
+			resdata["errormsg"] = err.Error()
+		}
+		
+		resdata["status"] = "ok"
+		output, err := json.Marshal(resdata)
+		if err != nil {
+			log.Fatalf("Error happened in JSON marshal. Err: %s", err)
+		}
+		res.Write(output)
+		return 
 		
 	}
 }
