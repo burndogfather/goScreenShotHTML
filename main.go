@@ -13,31 +13,21 @@ import (
 
 //요청이 들어오면 실행되는 함수
 func requestHandler(res http.ResponseWriter, req *http.Request) {
-	//POST데이터 수집
-	req.ParseForm()
-	postdata := req.PostForm 
 	
-	//target_url이라는 POST key값이 있다면, url변수로 변환
-	if postdata["target_url"] != nil{ 
-		url, _ := postdata["target_url"]
-		
-		taskCtx, cancel := chromedp.NewContext(
-			context.Background(),
-			chromedp.WithLogf(log.Printf),
-		)
-		defer cancel()
-		taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
-		defer cancel()
-		var pdfBuffer []byte
-		if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
-			log.Fatal(err)
-		}
-		if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
-			log.Fatal(err)
-		}
-		
-		fmt.Println(url)
+	if !(req.Method == "POST") {
+		httputil.BadRequestError(conn, "Inconfigured handler.")
+		return
 	}
+	
+	req.ParseForm()
+	url := req.FormValue("target_url")
+	if url == "" {
+		httputil.BadRequestError(conn, "Missing sjson parameter.")
+		return
+	}
+	
+	fmt.Println("target_url : ", url)	
+		
 }
 
 func main() {
@@ -50,6 +40,21 @@ func main() {
 		fmt.Println("Failed to ListenAndServe : ", err)
 	}
 	
+	
+	taskCtx, cancel := chromedp.NewContext(
+		context.Background(),
+		chromedp.WithLogf(log.Printf),
+	)
+	defer cancel()
+	taskCtx, cancel = context.WithTimeout(taskCtx, 15*time.Second)
+	defer cancel()
+	var pdfBuffer []byte
+	if err := chromedp.Run(taskCtx, pdfGrabber(url, "body", &pdfBuffer)); err != nil {
+		log.Fatal(err)
+	}
+	if err := ioutil.WriteFile("naver.pdf", pdfBuffer, 0644); err != nil {
+		log.Fatal(err)
+	}
 	
 }
 
