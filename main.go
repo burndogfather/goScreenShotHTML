@@ -31,7 +31,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 		
 		//반환될 Response 사전정의
 		res.WriteHeader(http.StatusCreated)
-		//res.Header().Set("Content-Type", "application/json")
+		res.Header().Set("Content-Type", "application/pdf")
 		resdata := make(map[string]string)
 		resdata["status"] = "fail"
 		
