@@ -18,7 +18,7 @@ func main() {
 	err := http.ListenAndServe(":8000", http.HandlerFunc(requestHandler))
 	if err != nil {
 		//http 서버 실행실패시 에러처리
-		fmt.Println("Failed to ListenAndServe : ", err)
+		log.Println("Failed to ListenAndServe : ", err)
 	}
 }
 
