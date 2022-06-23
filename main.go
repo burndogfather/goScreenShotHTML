@@ -23,6 +23,12 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 	//POST 데이터에서 url이라는 값을 찾아서 String을 벗기기(?)
 	if ( postdata["url"] != nil && postdata["element"] != nil){ 
 		
+		res.WriteHeader(http.StatusCreated)
+		res.Header().Set("Content-Type", "application/json")
+		resdata := make(map[string]bool)
+		resdata["is_success"] = false
+		
+		
 		//var url string
 		//var element string
 		
@@ -57,10 +63,7 @@ func requestHandler(res http.ResponseWriter, req *http.Request) {
 				log.Fatal(err)
 			}
 			
-			res.WriteHeader(http.StatusCreated)
-			res.Header().Set("Content-Type", "application/json")
-			resdata := make(map[string]string)
-			resdata["is_success"] = false
+			
 			output, err := json.Marshal(resdata)
 			if err != nil {
 				log.Fatalf("Error happened in JSON marshal. Err: %s", err)
